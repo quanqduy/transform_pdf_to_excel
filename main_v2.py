@@ -118,12 +118,12 @@ def func_main_process(input_list):
     # po_delivery_date_df = pd.concat([po_delivery_date_df, pd.DataFrame([new_row])], ignore_index=True)
     #-------------------
     po_delivery_date_df = po_delivery_date_df.sort_values(by=['MA_DON_HANG', 'DELIVERY_DATE'], ascending=[True, True], ignore_index=True)
-
-    is_unique = po_delivery_date_df['MA_DON_HANG'].is_unique
+    po_delivery_date_df['MAPPING'] = po_delivery_date_df['MA_DON_HANG'] + '-' + po_delivery_date_df['DELIVERY_DATE']
+    is_unique = po_delivery_date_df['MAPPING'].is_unique
     if not is_unique:
-        duplicates = po_delivery_date_df[po_delivery_date_df.duplicated(subset=['MA_DON_HANG'], keep=False)]
+        duplicates = po_delivery_date_df[po_delivery_date_df.duplicated(subset=['MAPPING'], keep=False)]
         # print(duplicates)
-        duplicates.drop(['FILE_PATH'], axis=1, inplace=True)
+        duplicates.drop(['FILE_PATH', 'MAPPING'], axis=1, inplace=True)
         duplicates['REASON'] = 'PO Number is duplicated'
         template_excel = duplicates
         flag = False
