@@ -122,7 +122,7 @@ if st.button("Transform", use_container_width=True):
                         st.success("--- Success, data was transformed 🎉🎉 --- Let's buy food to celebrate 😍🍔🍟")
                     elif flag is False:
                         st.session_state.final_df = result_df
-                        st.error("--- Failed, Please check your input data again 😒 ---")
+                        st.error("--- Failed, Please check your input data 😒 ---")
                 else:
                     st.warning("None of data was found 🫠")
         except Exception as e:
