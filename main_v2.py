@@ -117,7 +117,7 @@ def func_main_process(input_list):
     # template_excel['Ngày phân phối'] = tables['DELIVERY_DATE']
     template_excel['Mã SP 7 số'] = tables['CHI TIẾT MÃ HÀNG'].str[:7].str.replace('\n', '', regex=False)
     template_excel['Mã SP 13 số'] = tables['CHI TIẾT MÃ HÀNG'].str[8:21].str.replace('\n', '', regex=False)
-    template_excel['Tên sản phẩm'] = tables['CHI TIẾT MÃ HÀNG'].str[21:].str.replace('\n', '', regex=False)
+    template_excel['Tên sản phẩm'] = tables['CHI TIẾT MÃ HÀNG'].str[21:].str.replace('\n', ' ', regex=False)
     template_excel['Số lượng'] = tables['SL ĐẶT HÀNG']
     template_excel['Hạn sử dụng tối thiểu'] = tables['HSD TỐI THIỂU']
     template_excel['Đơn giá'] = tables['ĐƠN GIÁ TỈ LỆ VAT'].str.split('\n').str[0]
