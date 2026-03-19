@@ -17,8 +17,8 @@ created_date = date_de.strftime("%d.%m.%Y")
 
 
 # Sidebar hoặc Header để hiện version
-st.markdown("**Version {}** (*updated on {}*)".format(version, created_date))
 st.markdown("**Created by** {}".format(developer))
+st.caption("*Version {} (updated on {})*".format(version, created_date))
 st.title("Transform Data From PDF To Excel")
 
 
