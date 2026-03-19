@@ -11,9 +11,10 @@ st.set_page_config(page_title="Transform Data PDF-Excel", page_icon="📃", layo
 # --- THÔNG TIN VERSION ---
 version = '1.2'
 developer = 'quanq.duy__'
-de_tz = pytz.timezone("Europe/Berlin")
-date_de = datetime.now(de_tz)
-created_date = date_de.strftime("%d.%m.%Y")
+created_date = '19.03.2026'
+# de_tz = pytz.timezone("Europe/Berlin")
+# date_de = datetime.now(de_tz)
+# created_date = date_de.strftime("%d.%m.%Y")
 
 
 # Sidebar hoặc Header để hiện version
