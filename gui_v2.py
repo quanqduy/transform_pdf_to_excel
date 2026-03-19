@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
-from datetime import date
+from datetime import datetime, date
+import pytz
 import io
 import main_v2
 
@@ -9,14 +10,16 @@ st.set_page_config(page_title="Transform Data PDF-Excel", page_icon="📃", layo
 
 # --- THÔNG TIN VERSION ---
 version = '1.2'
-created_date = "18.03.2026 UTC+1"
 developer = 'quanq.duy__'
+de_tz = pytz.timezone("Europe/Berlin")
+date_de = datetime.now(de_tz)
+created_date = date_de.strftime("%d.%m.%Y")
+
 
 # Sidebar hoặc Header để hiện version
-st.markdown("**Version {}** (updated on {})".format(version, created_date))
+st.markdown("**Version {}** (*updated on {}*)".format(version, created_date))
 st.markdown("**Created by** {}".format(developer))
 st.title("Transform Data From PDF To Excel")
-# st.info("Công cụ hỗ trợ trích xuất và chuẩn hóa dữ liệu từ nhiều file PDF cùng lúc.")
 
 
 # TRANSPARENT LIQUID GLASS (APPLE STYLE) ---
@@ -40,14 +43,14 @@ div.stSuccess, div.stError, div.stWarning,
     
     border: 1px solid rgba(0, 0, 0, 0.05) !important; /* Viền đen cực mảnh để định hình khối trên nền sáng */
     border-radius: 20px !important; /* Bo góc tròn mềm mại */
-    box-shadow: none !important; /* Bỏ đổ bóng để trông phẳng và thanh thoát hơn */
+    box-shadow: none !important; /* Bỏ đổ bóng để trông phẳng và thanh thoát */
     transition: all 0.3s ease; /* Hiệu ứng mượt khi hover */
 }
 
 /* Tinh chỉnh khung Browse File (nơi có chữ Drag and drop) */
 [data-testid="stFileUploader"] > section {
     background-color: transparent !important;
-    border: 1px dashed rgba(0, 0, 0, 0.00) !important; /* Viền đứt đoạn cho khu vực upload */
+    # border: 1px dashed rgba(0, 0, 0, 0.00) !important; /* Viền đứt đoạn cho khu vực upload */
 }
 
 /* 3. Nút bấm "Liquid" (màu xám đậm để dễ đọc, bo góc) */
@@ -85,12 +88,13 @@ if 'final_df' not in st.session_state:
     st.session_state.final_df = None
 
 
-# --- BƯỚC 1: IMPORT DATA (BROWSE) ---
+# --- BƯỚC 1: IMPORT DATA ---
 uploaded_files = st.file_uploader(
     "Select files that you need to transform", 
     type="pdf", 
     accept_multiple_files=True,
-    key=f"uploader_{st.session_state.uploader_key}"
+    label_visibility="collapsed",
+    key="uploader_{}".format(st.session_state.uploader_key)
 )
 
 if uploaded_files:
@@ -112,8 +116,6 @@ if st.button("Transform", use_container_width=True):
     else:
         try:
             with st.spinner('--- Processing... Please wait! 🥱😴 ---'):
-                # Gọi hàm xử lý từ main_script_v2
-                # Lưu ý: Bạn cần sửa hàm func_execute trong main_script để nhận danh sách file buffer
                 result_df, flag = main_v2.func_execute(uploaded_files)
 
                 if result_df is not None:
@@ -126,7 +128,7 @@ if st.button("Transform", use_container_width=True):
                 else:
                     st.warning("None of data was found 🫠")
         except Exception as e:
-            st.error(f"--- Error ---: {str(e)}")
+            st.error("--- Error ---: {}".format(str(e)))
 
 # --- BƯỚC 3: SHOW KẾT QUẢ & DOWNLOAD ---
 if st.session_state.final_df is not None:
